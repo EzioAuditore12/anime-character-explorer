@@ -1,0 +1,81 @@
+<mat-toolbar class="app-toolbar">
+  <a class="app-brand" routerLink="/characters">
+    <mat-icon>auto_awesome</mat-icon>
+    <span>Anime Explorer</span>
+  </a>
+
+  <div class="global-search">
+    <mat-form-field appearance="outline">
+      <mat-label>Search everywhere</mat-label>
+      <input
+        matInput
+        [formControl]="searchControl"
+        placeholder="Search characters by name"
+        autocomplete="off"
+      />
+      <mat-icon matPrefix>search</mat-icon>
+      @if (searchControl.value) {
+        <button
+          class="clear-search"
+          mat-icon-button
+          type="button"
+          aria-label="Clear global search"
+          (click)="searchControl.setValue('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    @if (searchViewModel$ | async; as viewModel) {
+      @if (searchControl.value.trim()) {
+        <div class="search-results" role="listbox" aria-label="Global search results">
+          @if (viewModel.loading) {
+            <div class="search-status">
+              <mat-spinner diameter="22"></mat-spinner>
+              Searching characters...
+            </div>
+          } @else if (viewModel.error) {
+            <p class="search-status search-status--error" role="alert">{{ viewModel.error }}</p>
+          } @else if (viewModel.results.length) {
+            @for (result of viewModel.results; track result.type === 'character' ? result.character.id : result.route) {
+              @if (result.type === 'character') {
+                <button
+                  class="search-result"
+                  type="button"
+                  role="option"
+                  (click)="openCharacter(result.character.id)"
+                >
+                  <img [src]="result.character.mediumImageUrl" [alt]="result.character.name" />
+                  <span>
+                    <strong>{{ result.character.name }}</strong>
+                    <small>{{ result.character.nameNative }}</small>
+                  </span>
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              } @else {
+                <button
+                  class="search-result"
+                  type="button"
+                  role="option"
+                  (click)="openSetting(result.route)"
+                >
+                  <mat-icon class="search-result__icon">{{ result.icon }}</mat-icon>
+                  <span>
+                    <strong>{{ result.title }}</strong>
+                    <small>{{ result.description }}</small>
+                  </span>
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              }
+            }
+          } @else {
+            <p class="search-status">No characters found.</p>
+          }
+        </div>
+      }
+    }
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

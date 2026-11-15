@@ -1,0 +1,139 @@
+.app-toolbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  gap: 28px;
+  height: 72px;
+  padding: 0 32px;
+  color: #172033;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 9px;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.app-brand mat-icon {
+  color: #7c3aed;
+}
+
+.global-search {
+  position: relative;
+  width: min(100%, 560px);
+}
+
+.global-search .mat-mdc-form-field {
+  width: 100%;
+}
+
+.global-search .mat-mdc-text-field-wrapper {
+  height: 48px;
+}
+
+.global-search .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.clear-search {
+  margin-right: 4px;
+}
+
+.search-results {
+  position: absolute;
+  top: 58px;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  padding: 8px;
+  color: #172033;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 9px;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.search-result:hover {
+  background: #f1f5f9;
+}
+
+.search-result img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.search-result__icon {
+  width: 38px;
+  height: 38px;
+  padding: 8px;
+  box-sizing: border-box;
+  color: #7c3aed;
+  background: #ede9fe;
+  border-radius: 8px;
+}
+
+.search-result span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.search-result small,
+.search-status {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.search-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  margin: 0;
+}
+
+.search-status--error {
+  color: #b91c1c;
+}
+
+@media (max-width: 720px) {
+  .app-toolbar {
+    gap: 14px;
+    height: auto;
+    min-height: 72px;
+    padding: 12px 16px;
+  }
+
+  .app-brand span {
+    display: none;
+  }
+
+  .global-search {
+    flex: 1;
+  }
+}

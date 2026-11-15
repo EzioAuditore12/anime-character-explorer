@@ -1,0 +1,31 @@
+<main class="settings-page">
+  <a class="back-link" mat-button routerLink="/characters">
+    <mat-icon>arrow_back</mat-icon>
+    Back to characters
+  </a>
+
+  <section class="settings-panel">
+    <div class="settings-heading">
+      <span class="settings-eyebrow">Preferences</span>
+      <h1>Settings</h1>
+      <p>Personalize your Anime Character Explorer experience.</p>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-copy">
+        <mat-icon>{{ settingsStore.isDarkMode() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        <div>
+          <strong>Appearance</strong>
+          <span>Choose a light or dark interface.</span>
+        </div>
+      </div>
+      <mat-slide-toggle
+        [checked]="settingsStore.isDarkMode()"
+        (change)="settingsStore.toggleTheme()"
+        aria-label="Toggle dark mode"
+      >
+        Dark mode
+      </mat-slide-toggle>
+    </div>
+  </section>
+</main>

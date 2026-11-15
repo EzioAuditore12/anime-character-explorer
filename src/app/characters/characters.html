@@ -1,0 +1,68 @@
+<mat-sidenav-container class="characters-shell">
+  <mat-sidenav
+    #filterDrawer
+    class="filter-panel"
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
+  >
+    <div class="filter-panel__header">
+      <img
+        class="brand-image"
+        src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=160&q=80"
+        alt="Anime character illustration"
+      />
+      <span class="brand-name">Anime Character Explorer</span>
+    </div>
+
+    <app-character-filter (filtersChanged)="onFiltersChanged($event)"></app-character-filter>
+
+    <mat-nav-list class="filter-panel__links">
+      <a mat-list-item href="#characters">
+        <mat-icon matListItemIcon>groups</mat-icon>
+        <span matListItemTitle>All characters</span>
+      </a>
+      <a mat-list-item routerLink="/favorites">
+        <mat-icon matListItemIcon>star</mat-icon>
+        <span matListItemTitle>Favorites</span>
+      </a>
+      <a mat-list-item routerLink="/settings">
+        <mat-icon matListItemIcon>settings</mat-icon>
+        <span matListItemTitle>Settings</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    @if (viewModel$ | async; as viewModel) {
+      <main class="content">
+        <button
+          class="mobile-filter-toggle"
+          mat-stroked-button
+          type="button"
+          (click)="filterDrawer.toggle()"
+        >
+          <mat-icon>filter_alt</mat-icon>
+          Filters
+        </button>
+
+        @if (viewModel.loading) {
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+
+        @if (viewModel.error) {
+          <p class="error-message" role="alert">{{ viewModel.error }}</p>
+        } @else {
+          <app-character-list [characters]="viewModel.characters"></app-character-list>
+          <mat-paginator
+            [length]="viewModel.page.totalElements"
+            [pageIndex]="viewModel.page.number"
+            [pageSize]="viewModel.page.size"
+            [hidePageSize]="true"
+            (page)="onPageChange($event)"
+            aria-label="Character pages"
+          ></mat-paginator>
+        }
+      </main>
+    }
+  </mat-sidenav-content>
+</mat-sidenav-container>

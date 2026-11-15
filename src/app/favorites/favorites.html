@@ -1,0 +1,33 @@
+<main class="favorites-page">
+  <a class="back-link" mat-button routerLink="/characters">
+    <mat-icon>arrow_back</mat-icon>
+    Back to characters
+  </a>
+
+  <section class="favorites-content">
+    <div class="favorites-heading">
+      <div>
+        <span class="favorites-eyebrow">Your collection</span>
+        <h1>Favorites</h1>
+        <p>{{ favoritesStore.count() }} saved characters</p>
+      </div>
+      @if (favoritesStore.count()) {
+        <button mat-stroked-button type="button" (click)="favoritesStore.clear()">
+          <mat-icon>delete_sweep</mat-icon>
+          Clear all
+        </button>
+      }
+    </div>
+
+    @if (favoritesStore.favorites().length) {
+      <app-character-list [characters]="favoritesStore.favorites()"></app-character-list>
+    } @else {
+      <div class="empty-favorites">
+        <mat-icon>star_border</mat-icon>
+        <h2>No favorites yet</h2>
+        <p>Use the star column in the character list to save characters here.</p>
+        <a mat-flat-button routerLink="/characters">Browse characters</a>
+      </div>
+    }
+  </section>
+</main>

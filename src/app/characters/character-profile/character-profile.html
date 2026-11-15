@@ -1,0 +1,175 @@
+<main class="profile-page">
+  <a class="back-link" mat-button routerLink="/characters">
+    <mat-icon>arrow_back</mat-icon>
+    Back to characters
+  </a>
+
+  @if (viewModel$ | async; as viewModel) {
+    @if (viewModel.character; as character) {
+      <section class="profile-card">
+        <div class="profile-hero">
+          <img [src]="character.largeImageUrl" [alt]="character.name" class="profile-image" />
+          <div class="profile-heading">
+            <span class="profile-eyebrow">Anime character profile</span>
+            <h1>{{ character.name }}</h1>
+            <p class="native-name">{{ character.nameNative }}</p>
+            <p class="profile-meta">
+              <span><mat-icon>person</mat-icon>{{ character.gender }}</span>
+              <span><mat-icon>favorite</mat-icon>{{ character.favorites | number }}</span>
+            </p>
+          </div>
+          <button
+            class="favorite-toggle"
+            mat-icon-button
+            type="button"
+            [attr.aria-label]="
+              favoritesStore.isFavorite(character.id) ? 'Remove from favorites' : 'Add to favorites'
+            "
+            (click)="toggleFavorite(character)"
+          >
+            <mat-icon>{{ favoritesStore.isFavorite(character.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        </div>
+
+        @if (character.nicknames.length) {
+          <div class="nickname-list">
+            <span class="detail-label">Also known as</span>
+            <div class="nickname-pills">
+              @for (nickname of character.nicknames; track nickname) {
+                <span class="nickname-pill">{{ nickname }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="profile-content">
+          <div>
+            <section class="profile-section">
+              <h2>About</h2>
+              <p>{{ character.about }}</p>
+            </section>
+
+            <section class="profile-section">
+              <h2>Additional details</h2>
+              @if (getPayloadRows(character.payload); as payloadRows) {
+                @if (payloadRows.length) {
+                  <div class="payload-table-container">
+                    <table mat-table [dataSource]="payloadRows" class="payload-table">
+                      <ng-container matColumnDef="property">
+                        <th mat-header-cell *matHeaderCellDef>Property</th>
+                        <td mat-cell *matCellDef="let row">{{ row.key }}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="value">
+                        <th mat-header-cell *matHeaderCellDef>Value</th>
+                        <td mat-cell *matCellDef="let row">
+                          @if (row.relatedCharacters.length) {
+                            <div class="related-character-list">
+                              @for (relatedCharacter of row.relatedCharacters; track relatedCharacter.id) {
+                                <button
+                                  class="related-character-card"
+                                  type="button"
+                                  (click)="openRelatedCharacter(relatedCharacter.id)"
+                                >
+                                  <mat-icon>person</mat-icon>
+                                  <span>
+                                    <strong>{{ relatedCharacter.name }}</strong>
+                                    <small>
+                                      @if (relatedCharacter.relation) {
+                                        ({{ relatedCharacter.relation }}) ·
+                                      }
+                                      ID: {{ relatedCharacter.id }}
+                                    </small>
+                                  </span>
+                                  <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                              }
+                            </div>
+                          } @else if (row.linkedIds.length) {
+                            <span class="payload-ids">{{ row.linkedIds.join(', ') }}</span>
+                          } @else {
+                            {{ row.value }}
+                          }
+                        </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="payloadColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: payloadColumns"></tr>
+                    </table>
+                  </div>
+                } @else {
+                  <p class="empty-state">No additional details available.</p>
+                }
+              }
+            </section>
+
+            <section class="profile-section">
+              <h2>Appearances</h2>
+              <div class="appearance-list">
+                @for (appearance of character.appearances; track appearance.animeId) {
+                  <a
+                    class="appearance-item"
+                    [href]="appearance.siteUrl"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <img [src]="appearance.imageUrl" [alt]="appearance.titleEnglish" />
+                    <span class="appearance-copy">
+                      <strong>{{ appearance.titleEnglish }}</strong>
+                      <small>{{ appearance.role | titlecase }}</small>
+                    </span>
+                    <mat-icon>open_in_new</mat-icon>
+                  </a>
+                }
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="profile-section detail-panel">
+              <h2>Details</h2>
+              <div class="profile-details">
+                <div>
+                  <span class="detail-label">Age</span>
+                  <strong>{{ character.age }}</strong>
+                </div>
+                <div>
+                  <span class="detail-label">Birthday</span>
+                  <strong>{{ character.dobMonth }}/{{ character.dobDay }}/{{ character.dobYear }}</strong>
+                </div>
+                <div>
+                  <span class="detail-label">Source</span>
+                  <a [href]="character.sourceUrl" target="_blank" rel="noopener">{{ character.source }}</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="profile-section">
+              <h2>Voice actors</h2>
+              <div class="voice-actor-list">
+                @for (voiceActor of character.voiceActors; track voiceActor.id) {
+                  <a
+                    class="voice-actor"
+                    [href]="voiceActor.url"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <img [src]="voiceActor.imageUrl" [alt]="voiceActor.name" />
+                    <span>
+                      <strong>{{ voiceActor.name }}</strong>
+                      <small>{{ voiceActor.nameNative }} · {{ voiceActor.language }}</small>
+                    </span>
+                  </a>
+                }
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+    } @else if (viewModel.error) {
+      <p class="error-message" role="alert">{{ viewModel.error }}</p>
+    } @else {
+      <p class="loading-card">Loading character profile...</p>
+    }
+  }
+</main>

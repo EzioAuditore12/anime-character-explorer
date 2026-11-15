@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.dark-theme {
+  color-scheme: dark;
+}
+
+.dark-theme body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.dark-theme .app-toolbar,
+.dark-theme .search-results {
+  color: #e2e8f0;
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark-theme .search-result:hover {
+  background: #334155;
+}
+
+.dark-theme .characters-shell,
+.dark-theme .settings-page,
+.dark-theme .profile-page,
+.dark-theme .favorites-page {
+  background: #0f172a;
+}
+
+.dark-theme .filter-panel,
+.dark-theme .settings-panel,
+.dark-theme .profile-section,
+.dark-theme .payload-table-container {
+  color: #e2e8f0;
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark-theme .content,
+.dark-theme .profile-card,
+.dark-theme .favorites-heading {
+  color: #e2e8f0;
+}
+
+.dark-theme .empty-favorites {
+  color: #e2e8f0;
+  background: #1e293b;
+  border-color: #475569;
+}
+
+.dark-theme .settings-heading p,
+.dark-theme .favorites-heading p {
+  color: #94a3b8;
+}
+
+.dark-theme .ag-theme-quartz {
+  --ag-background-color: #1e293b;
+  --ag-foreground-color: #e2e8f0;
+  --ag-header-background-color: #334155;
+  --ag-border-color: #475569;
+}

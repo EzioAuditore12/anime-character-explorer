@@ -1,0 +1,21 @@
+<form class="filter-form" [formGroup]="filterForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Search name</mat-label>
+    <input matInput formControlName="name" placeholder="e.g. Naruto" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option value="">All genders</mat-option>
+      <mat-option value="Female">Female</mat-option>
+      <mat-option value="Male">Male</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-stroked-button type="button" (click)="clear()">
+    <mat-icon>restart_alt</mat-icon>
+    Clear filters
+  </button>
+</form>
